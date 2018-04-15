@@ -1,22 +1,43 @@
-#include<stdio.h>
+#include <stdio.h>
 
+struct process{
+	int P[100];
+	int at[100];
+	int bt[100];
+	int ct[100];
+	int pr[100];
+	int tat[100];
+	int wt[100];
+}p,t;	
+
+int i, j, n, total=0, pos, temp, avg_wt, avg_tat, AT[100];;
 
 void calc_wt();
-int bt[20],p[20],wt[20],tat[20],pr[20],i,j,n,total=0,pos,temp,avg_wt,avg_tat;
    
 int main()
 {
-    printf("Enter Total Number of Process:");
-    scanf("%d",&n);
+	printf("Enter Total Number of Process: ");
+	scanf("%d", &n);
  
-    printf("\nEnter burst time for the processes: \n");
-    for(i=0;i<n;i++)
-    {
-        printf("\nP%d => ",i+1);
-        scanf("%d",&bt[i]);
-        p[i]=i+1;          	 //contains process number
-    }
-   
+	printf("\nEnter arrival time and burst time for the processes: \n");
+	for(i=0; i<n; i++)
+    	{
+        	printf("\nP%d:\nArrival time => ",i+1);
+        	scanf("%d", &p.at[i]);
+        	printf("Burst time => ",i+1);
+        	scanf("%d", &p.bt[i]);
+        	p.P[i]=i + 1;     		     	 //contains process number
+    	}
+	
+	t = p;
+
+  	for(i=0; i<n; i++){
+		printf("\tP%d\t%d\t%d\t%d\n", t.P[i], t.at[i], t.bt[i], t.pr[i]);
+	}
+  	for(i=0; i<n; i++){
+		printf("\n\tP%d\t%d\t%d\t%d\n", p.P[i], p.at[i], p.bt[i], p.pr[i]);
+	}
+}/*   
     sort();
     calc_wt();
 
@@ -48,28 +69,59 @@ void calc_wt(){
     total=0;
 }
 
-void sort(){
+void sort_pr(){
+	for(i=0; i<( n - 1 ); i++){
+		pos = i; 
+      		for(j=i+1; j<n; j++){
+         		if(t.bt[pos]>t.bt[j])
+            		pos = j;
+      		}
+      		if(pos != i){
+         		temp = t.bt[i];
+         		t.bt[i] = t.bt[pos];
+         		t.bt[pos] = temp;
 
-    //sorting burst time, priority and process number in ascending order using selection sort
-    for(i=0;i<n;i++)
-    {
-        pos=i;
-        for(j=i+1;j<n;j++)
-        {
-            if(pr[j]<pr[pos])
-                pos=j;
-        }
- 
-        temp=pr[i];
-        pr[i]=pr[pos];
-        pr[pos]=temp;
- 
-        temp=bt[i];
-        bt[i]=bt[pos];
-        bt[pos]=temp;
- 
-        temp=p[i];
-        p[i]=p[pos];
-        p[pos]=temp;
-    }
+			temp = t.P[i];
+			t.P[i] = t.P[pos];
+			t.P[pos] = temp;
+			
+			temp = t.at[i];
+			t.at[i] = t.at[pos];
+			t.at[pos] = temp;
+      		}
+		t.pr[i] = n-i;
+		t.pr[n-1] = 1;
+	}
+	sort_at();
+}
+
+void sort_at(){
+   	for(i=0; i<( n - 1 ); i++){
+		AT[i] = t.at[i];
+		AT[n-1] = t.at[n-1];
+		pos = i; 
+      		for(j=i+1; j<n; j++){
+         		if(AT[pos]>AT[j])
+            		pos = j;
+      		}
+      		if(pos != i){
+         		temp = AT[i];
+         		AT[i] = AT[pos];
+         		AT[pos] = temp;
+		}
+	}
+}
+
+void calc_ct(){
+	int tym = 0;
+	for(i=0; i<n; i++){
+		for(j=0; j<n; j++){
+			if(AT[i] == t.at[j]){
+				pos = j;
+				if(t.at[pos]<AT[i+1]){
+					t.bt[pos] -= (AT[i+1] - t.at[pos]);		//updating burst time
+					ct[pos] = AT[i+1];
+					tym += ct[pos];
+				}
+			}
 }
