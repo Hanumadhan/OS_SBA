@@ -4,7 +4,7 @@ void sort();
 void calcwt();
 void printq();
 
-int bt[10],waittime[10],pdata[10];
+int bt[10],waittime[10],pdata[10],priority[10];
 int n, avgwt=0;
 float avgtat=0;
 
@@ -18,6 +18,8 @@ int main()
 	{
 		printf("Enter burst time for process P%d : ",i+1);
 		scanf("%d",&bt[i]);
+		printf("Enter priority for P%d: ",i+1);
+		scanf("%d",&priority[i]);
 		pdata[i] = i;
 	}
 	sort();
@@ -34,8 +36,11 @@ void sort()
 	{
 		for(y=x;y<n;y++)
 		{
-			if(bt[x]>bt[y])
+			if(priority[x]>priority[y])
 			{
+				temp = priority[x];
+				priority[x] = priority[y];
+				priority[y] = temp;
 				temp = bt[x];
 				bt[x] = bt[y];
 				bt[y] = temp;
