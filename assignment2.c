@@ -18,12 +18,10 @@ int main()
 	{
 		printf("Enter burst time for process P%d : ",i+1);
 		scanf("%d",&bt[i]);
-		printf("Enter priority for P%d: ",i+1);
-		scanf("%d",&priority[i]);
 		pdata[i] = i;
 	}
 	sort();
-	printf("\nProcess\t\tWaiting time\tTurn around time");
+	printf("\nProcess\t\tWaiting time\tTurn around time\tPriority");
 	calcwt();
 	printf("\n\nOrder of process execution: ");
 	printq();
@@ -36,11 +34,9 @@ void sort()
 	{
 		for(y=x;y<n;y++)
 		{
-			if(priority[x]>priority[y])
+			if(bt[x]>bt[y])
 			{
-				temp = priority[x];
-				priority[x] = priority[y];
-				priority[y] = temp;
+				priority[x]=x;
 				temp = bt[x];
 				bt[x] = bt[y];
 				bt[y] = temp;
@@ -59,7 +55,7 @@ void calcwt()
 	{
 		waittime[z] = j;
 		j = bt[z] + j;
-		printf("\nP%d\t\t\t%d\t\t%d",pdata[z]+1,waittime[z],waittime[z]+bt[z]);
+		printf("\nP%d\t\t\t%d\t\t%d\t\t\t%d",pdata[z]+1,waittime[z],waittime[z]+bt[z],priority[z]);
 		avgwt+=waittime[z];
 		avgtat+=waittime[z]+bt[z];
 	}
